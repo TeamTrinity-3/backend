@@ -1,17 +1,31 @@
-package com.Mofit.MofitBackend.global.login.dto;
+package com.Mofit.MofitBackend.global.login.details;
 
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomOauth2UserDetails implements UserDetails, OAuth2User {
     private final User user;
+    private Map<String, Object> attributes;
 
-    public CustomUserDetails(User user){
+    public CustomOauth2UserDetails(User user, Map<String, Object> attributes){
         this.user = user;
+        this.attributes = attributes;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes(){
+        return attributes;
+    }
+
+    @Override
+    public String getName(){
+        return null;
     }
 
     @Override
@@ -23,31 +37,37 @@ public class CustomUserDetails implements UserDetails {
                 return "ROLE_"+user.getUserRole();
             }
         });
+
         return collection;
     }
 
     @Override
-    public String getPassword(){
+    public String getPassword() {
         return user.getPassword();
     }
+
     @Override
-    public String getUsername(){
+    public String getUsername() {
         return user.getLoginId();
     }
+
     @Override
-    public boolean isAccountNonExpired(){
+    public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
-    public boolean isAccountNonLocked(){
+    public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
-    public boolean isCredentialsNonExpired(){
+    public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
-    public boolean isEnabled(){
+    public boolean isEnabled() {
         return true;
     }
 }

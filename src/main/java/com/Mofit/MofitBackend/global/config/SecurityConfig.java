@@ -2,7 +2,10 @@ package com.Mofit.MofitBackend.global.config;
 
 import com.Mofit.MofitBackend.global.login.filter.JwtFilter;
 import com.Mofit.MofitBackend.global.login.filter.LoginFilter;
+import com.Mofit.MofitBackend.global.login.service.CustomOauth2UserService;
 import com.Mofit.MofitBackend.global.login.util.JwtUtil;
+import com.Mofit.MofitBackend.global.login.util.OAuth2FailureHandler;
+import com.Mofit.MofitBackend.global.login.util.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationConfiguration configuration;
+    private final CustomOauth2UserService customOauth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
     private final JwtUtil jwtUtil;
 
     @Bean
@@ -46,8 +52,14 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
-                        .requestMatchers("/","/login/","/login/**").permitAll()
+                        .requestMatchers("/","/login/","/login/**","/oauth2/**").permitAll()
                         .anyRequest().authenticated());
+        http
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOauth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+                        .failureHandler(oAuth2FailureHandler));
         http
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
@@ -57,7 +69,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // 모든 도메인 허용 (개발용)
+        configuration.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:8080")); // 모든 도메인 허용 (개발용)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(false);

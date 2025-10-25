@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -19,8 +21,15 @@ public class LoginService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //id 중복 확인
-    public boolean checkLoginIdDuplicate(String loginId){
-        return userRepository.existsByLoginId(loginId);
+    public String checkLoginIdDuplicate(String loginId){
+        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            return user.getProvider();
+        }
+        else{
+            return "null";
+        }
     }
     //회원가입
     @Transactional
@@ -42,7 +51,10 @@ public class LoginService {
     @Transactional
     public void patchPassword(PasswordRequest passwordRequest){
         User user = getLoginUser(passwordRequest.getLoginId());
-        user.setPassword(bCryptPasswordEncoder.encode(passwordRequest.getPassword()));
-        userRepository.save(user);
+        if(user.getProvider()==null) {
+            user.setPassword(bCryptPasswordEncoder.encode(passwordRequest.getPassword()));
+            userRepository.save(user);
+        }
+        else throw new BusinessException(ErrorCode.UNABLE_CHANGE_PASSWORD);
     }
 }

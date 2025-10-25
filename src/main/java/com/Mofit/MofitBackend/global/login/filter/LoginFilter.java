@@ -1,13 +1,17 @@
 package com.Mofit.MofitBackend.global.login.filter;
 
 import com.Mofit.MofitBackend.global.error.ErrorCode;
+import com.Mofit.MofitBackend.global.error.ErrorResponse;
 import com.Mofit.MofitBackend.global.error.exception.BusinessException;
-import com.Mofit.MofitBackend.global.login.dto.CustomUserDetails;
+import com.Mofit.MofitBackend.global.login.details.CustomSecurityUserDetails;
 import com.Mofit.MofitBackend.global.login.dto.TokenResponse;
 import com.Mofit.MofitBackend.global.login.util.JwtUtil;
 import com.Mofit.MofitBackend.global.response.ApiResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,8 +58,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication) throws IOException {
         // username 추출
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        String username = customUserDetails.getUsername();
+        CustomSecurityUserDetails customSecurityUserDetails = (CustomSecurityUserDetails) authentication.getPrincipal();
+        String username = customSecurityUserDetails.getUsername();
 
         // role 추출
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -65,12 +69,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // JWTUtil에 token 생성 요청
         String token = jwtUtil.createJwt(username, role, 60*60*1000L);
-
-        // JWT를 response에 담아서 응답 (header 부분에)
-        // key : "Authorization"
-        // value : "Bearer " (인증방식) + token
-        //response.addHeader("Authorization", "Bearer " + token);
-        //return new ApiResponse<>(200, token);
 
         response.setContentType("application/json;charset=UTF-8");
 
@@ -86,8 +84,19 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 실패 시
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) {
+                                              AuthenticationException failed) throws IOException {
 
-        throw new BusinessException(ErrorCode.WRONG_PASSWORD);
+        response.setContentType("application/json;charset=UTF-8");
+
+        // ApiResponse 객체 만들기
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.WRONG_PASSWORD);
+
+        // JSON으로 직렬화해서 응답 바디에 쓰기
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
+        response.getWriter().write(jsonResponse);
+
     }
 }

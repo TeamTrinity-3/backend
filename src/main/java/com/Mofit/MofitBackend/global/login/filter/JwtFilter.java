@@ -4,7 +4,7 @@ import com.Mofit.MofitBackend.domain.user.entity.User;
 import com.Mofit.MofitBackend.domain.user.entity.UserRole;
 import com.Mofit.MofitBackend.global.error.ErrorCode;
 import com.Mofit.MofitBackend.global.error.exception.BusinessException;
-import com.Mofit.MofitBackend.global.login.dto.CustomUserDetails;
+import com.Mofit.MofitBackend.global.login.details.CustomSecurityUserDetails;
 import com.Mofit.MofitBackend.global.login.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,6 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 || path.startsWith("/swagger")
                 || path.startsWith("/api-docs")
                 || path.startsWith("/login/")
+                || path.startsWith("/oauth2/")
                 || path.equals("/login")) {
             filterChain.doFilter(request, response);
             return;
@@ -71,10 +72,10 @@ public class JwtFilter extends OncePerRequestFilter {
         user.setUserRole(UserRole.USER);
 
         // UserDetails에 회원 정보 객체 담기
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        CustomSecurityUserDetails customSecurityUserDetails = new CustomSecurityUserDetails(user);
 
         // 스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customSecurityUserDetails, null, customSecurityUserDetails.getAuthorities());
 
         // 세션에 사용자 등록 => 일시적으로 user 세션 생성
         SecurityContextHolder.getContext().setAuthentication(authToken);

@@ -37,8 +37,11 @@ public class LoginController {
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public void login(@RequestBody LoginRequest loginRequest){
-
     }
+
+    //구글 로그인
+
+
     //비밀번호 변경
     @Transactional
     @PatchMapping("/passwordPatch")
