@@ -27,7 +27,7 @@ public class SwaggerConfig {
 
     private List<Server> getServers() {
         return List.of(
-                //new Server().url("https://api.mefoweb.com/api").description("배포 서버"),
+                new Server().url("https://api.mefoweb.com/api").description("배포 서버"),
                 new Server().url("http://localhost:8080/api").description("로컬 서버")
         );
     }
