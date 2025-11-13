@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get clean
 
 WORKDIR /app
-ARG JAR_FILE=build/libs/server-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app.jar
+#ARG JAR_FILE=build/libs/server-0.0.1-SNAPSHOT.jar
+COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar","/app.jar"]
