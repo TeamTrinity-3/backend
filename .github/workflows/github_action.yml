@@ -83,12 +83,10 @@ jobs:
         host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
         username: ubuntu
         key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
-        source: "./docker-compose.yml"
-        target: "~/backend/"
         # 도커 작업
         script: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-          cd ~/.ssh/backend
+          cd ~/backend
           sudo docker compose down
           sudo docker compose pull
           sudo docker compose up -d
