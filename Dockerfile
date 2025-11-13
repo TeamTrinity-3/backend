@@ -1,5 +1,4 @@
 FROM gradle:8.10-jdk17 AS builder
-WORKDIR /app
 COPY . .
 RUN gradle clean build -x test
 
@@ -13,7 +12,6 @@ RUN apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata && \
     apt-get clean
 
-WORKDIR /app
 #ARG JAR_FILE=build/libs/server-0.0.1-SNAPSHOT.jar
 COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
