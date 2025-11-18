@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
@@ -28,23 +30,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         CustomOauth2UserDetails customOauth2UserDetails = (CustomOauth2UserDetails) authentication.getPrincipal();
         String username = customOauth2UserDetails.getUsername();
 
-        // role 추출
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
-        String role = auth.getAuthority();
+        //임시 코드 발급
+        String tempCode = jwtUtil.createTempJwt(username, 60 * 1000L);
 
-        // JWTUtil에 token 생성 요청
-        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
-
-        response.setContentType("application/json;charset=UTF-8");
-
-        // ApiResponse 객체 만들기
-        ApiResponse<TokenResponse> apiResponse = new ApiResponse<>(200, TokenResponse.from(username, "Bearer " + token));
-
-        // JSON으로 직렬화해서 응답 바디에 쓰기
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(apiResponse);
-        response.getWriter().write(jsonResponse);
+        //redirect
+        String redirectUrl = "https://mefoweb.com/api/login/success?code="+tempCode;
+        response.sendRedirect(redirectUrl);
     }
 }
