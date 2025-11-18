@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 @Slf4j
@@ -26,21 +28,9 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
-        log.warn("OAuth2 로그인 실패: {}", exception.getMessage());
-
-        response.setContentType("application/json;charset=UTF-8");
-
-        ErrorResponse errorResponse;
-
-        // BusinessException인 경우
-        errorResponse = ErrorResponse.of(ErrorCode.OTHER_ACCOUNT_EXIST);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // LocalDateTime 처리
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
-        response.getWriter().write(jsonResponse);
+        String error = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
+        String redirectUrl = "https://mefoweb.com/api/login/failure?error=" + error;
+        response.sendRedirect(redirectUrl);
 
     }
 }

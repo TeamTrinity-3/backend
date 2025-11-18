@@ -55,4 +55,13 @@ public class JwtUtil {
                 .signWith(secretKey) // ✅ Explicitly set SignatureAlgorithm
                 .compact();
     }
+
+    public String createTempJwt(String loginId, Long expiredMs){
+        return Jwts.builder()
+                .claim("loginId", loginId)
+                .issuedAt(new Date(System.currentTimeMillis())) // ✅ Use setIssuedAt()
+                .expiration(new Date(System.currentTimeMillis() + expiredMs)) // ✅ Use setExpiration()
+                .signWith(secretKey) // ✅ Explicitly set SignatureAlgorithm
+                .compact();
+    }
 }

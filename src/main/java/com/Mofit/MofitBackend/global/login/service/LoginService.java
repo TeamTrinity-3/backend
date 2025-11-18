@@ -6,6 +6,9 @@ import com.Mofit.MofitBackend.global.error.ErrorCode;
 import com.Mofit.MofitBackend.global.error.exception.BusinessException;
 import com.Mofit.MofitBackend.global.login.dto.JoinRequest;
 import com.Mofit.MofitBackend.global.login.dto.PasswordRequest;
+import com.Mofit.MofitBackend.global.login.dto.TokenRequest;
+import com.Mofit.MofitBackend.global.login.dto.TokenResponse;
+import com.Mofit.MofitBackend.global.login.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +20,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginService {
     private final UserRepository userRepository;
-
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtUtil jwtUtil;
 
     //id 중복 확인
     public String checkLoginIdDuplicate(String loginId){
@@ -41,7 +44,13 @@ public class LoginService {
         return user;
     }
 
-    //로그인
+    //소셜 로그인 jwt 토큰 발급
+    public TokenResponse createJwtToken(TokenRequest tokenRequest){
+        User user = getLoginUser(jwtUtil.getLoginId(tokenRequest.getTempCode()));
+        // JWTUtil에 token 생성 요청
+        String token = jwtUtil.createJwt(user.getLoginId(), user.getUserRole().name(), 60*60*1000L);
+        return TokenResponse.from(user.getLoginId(), "Bearer " + token);
+    }
 
     //로그인한 회원 정보
     public User getLoginUser(String loginId){

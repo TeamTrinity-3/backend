@@ -39,7 +39,12 @@ public class LoginController {
     public void login(@RequestBody LoginRequest loginRequest){
     }
 
-    //구글 로그인
+    //소셜 로그인 jwt 토큰 발급 요청
+    @PostMapping("/accessToken")
+    @Operation(summary = "jwt 토큰 발급 요청")
+    public ApiResponse<TokenResponse> createJwtToken(@RequestBody TokenRequest tokenRequest){
+        return new ApiResponse<>(200, loginService.createJwtToken(tokenRequest));
+    }
 
 
     //비밀번호 변경

@@ -65,7 +65,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
                 user = userCheck;
             }
             else{
-                throw new OAuth2AuthenticationException(new OAuth2Error("409", "다른 방식으로 회원가입한 계정입니다.", null));
+                throw new OAuth2AuthenticationException(new OAuth2Error("409", "Account exists with a different login method", null));
             }
         } //첫 회원가입일 경우
         else{
