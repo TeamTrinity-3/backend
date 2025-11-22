@@ -1,6 +1,8 @@
 package com.Mofit.MofitBackend.domain.user.entity;
 
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
+import com.Mofit.MofitBackend.domain.health.entity.Health;
+import com.Mofit.MofitBackend.domain.stamina.entity.Stamina;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -33,4 +35,16 @@ public class User extends BaseEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Health health;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Stamina stamina;
+
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private AnalyzeResult analyzeResult;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ExercisePlan> exercisePlans;
 }

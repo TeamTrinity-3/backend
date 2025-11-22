@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,18 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
                                         AuthenticationException exception) throws IOException {
 
         String error = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
-        String redirectUrl = "https://mefoweb.com/api/login/failure?error=" + error;
+
+        //host 파악
+        String host = request.getHeader("Host");
+
+        String redirectUrl;
+//        if(host!=null && host.contains("localhost")){
+//            redirectUrl = "http://"+host+"/login/failure?error=" + error;
+//        }
+//        else{
+//            redirectUrl = "https://mefoweb.com/login/failure?error=" + error;
+//        }
+        redirectUrl = "http://localhost:5173/login/failure?error="+error;
         response.sendRedirect(redirectUrl);
 
     }

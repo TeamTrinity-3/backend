@@ -33,8 +33,18 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         //임시 코드 발급
         String tempCode = jwtUtil.createTempJwt(username, 60 * 1000L);
 
+        //host 파악
+        String host = request.getHeader("Host");
+
         //redirect
-        String redirectUrl = "https://mefoweb.com/api/login/success?code="+tempCode;
+        String redirectUrl;
+//        if(host!=null && host.contains("localhost")){
+//            redirectUrl = "http://"+host+"/login/success?code="+tempCode;
+//        }
+//        else{
+//            redirectUrl = "https://mefoweb.com/login/success?code="+tempCode;
+//        }
+        redirectUrl = "http://localhost:5173/login/success?code="+tempCode;
         response.sendRedirect(redirectUrl);
     }
 }
