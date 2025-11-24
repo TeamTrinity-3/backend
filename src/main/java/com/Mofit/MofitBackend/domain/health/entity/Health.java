@@ -1,6 +1,7 @@
 package com.Mofit.MofitBackend.domain.health.entity;
 
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
+import com.Mofit.MofitBackend.domain.health.dto.HealthRequest;
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Health extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +39,17 @@ public class Health extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_restrict")
     private Set<RestrictArea> restrictAreas = new HashSet<>();
+
+    public Health(User user){
+        this.user = user;
+    }
+    public void patchHealth(HealthRequest healthRequest){
+        this.birth = healthRequest.getBirth();
+        this.gender = healthRequest.getGender();
+        this.height = healthRequest.getHeight();
+        this.weight = healthRequest.getWeight();
+        this.proficiency = healthRequest.getProficiency();
+        this.place = healthRequest.getPlace();
+        this.restrictAreas = healthRequest.getRestrictAreas();
+    }
 }
