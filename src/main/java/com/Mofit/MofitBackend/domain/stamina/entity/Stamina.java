@@ -1,16 +1,15 @@
 package com.Mofit.MofitBackend.domain.stamina.entity;
 
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
+import com.Mofit.MofitBackend.domain.stamina.dto.StaminaRequest;
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Setter
-@Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stamina extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +30,16 @@ public class Stamina extends BaseEntity {
     private int forwardFold;
 
     private float balance;
+
+    public Stamina(User user){
+        this.user = user;
+    }
+    public void patchStamina(StaminaRequest staminaRequest){
+        this.plank = staminaRequest.getPlank();
+        this.chairSquat = staminaRequest.getChairSquat();
+        this.pushUp = staminaRequest.getPushUp();
+        this.stepTest = staminaRequest.getStepTest();
+        this.forwardFold = staminaRequest.getForwardFold();
+        this.balance = staminaRequest.getBalance();
+    }
 }

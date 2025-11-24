@@ -21,7 +21,6 @@ public class User extends BaseEntity {
     @NotNull
     private String loginId;
 
-    @NotNull
     private String name;
 
     private String picture;
