@@ -1,6 +1,8 @@
 package com.Mofit.MofitBackend.domain.user.service;
 
+
 import com.Mofit.MofitBackend.domain.user.dto.NameRequest;
+import com.Mofit.MofitBackend.domain.user.dto.ProfileResponse;
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import com.Mofit.MofitBackend.domain.user.repository.UserRepository;
 import com.Mofit.MofitBackend.global.login.service.LoginService;
@@ -20,5 +22,11 @@ public class UserService {
         user.setName(nameRequest.getName());
         userRepository.save(user);
         return user;
+    }
+
+    //프로필 정보 불러오기
+    public ProfileResponse getUserProfile(String loginId){
+        User user = loginService.getLoginUser(loginId);
+        return ProfileResponse.from(user);
     }
 }

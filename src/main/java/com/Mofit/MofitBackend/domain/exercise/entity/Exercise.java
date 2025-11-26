@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Exercise extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

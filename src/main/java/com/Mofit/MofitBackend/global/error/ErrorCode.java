@@ -30,6 +30,10 @@ public enum ErrorCode {
 
     STAMINA_ALREADY_EXIST(409, "체력정보가 이미 존재합니다."),
 
+    //PLAN
+    PLAN_DOESNT_EXIST(404, "운동일정이 존재하지 않습니다."),
+
+
     //TOKEN
     TOKEN_NOT_PROVIDED(401, "토큰이 없거나 형식이 잘못되었습니다."),
 
@@ -38,7 +42,9 @@ public enum ErrorCode {
     //NOT_VALID
     NOT_VALID_ERROR(400, "잘못된 파라미터입니다."),
 
-    NOT_VALID_ENUM_VALUE(400, "잘못된 enum 값입니다.");
+    NOT_VALID_ENUM_VALUE(400, "잘못된 enum 값입니다."),
+
+    NOT_VALID_ACCESS(403, "접근 권한이 없습니다.");
     private final int status;
     private final String message;
 }
