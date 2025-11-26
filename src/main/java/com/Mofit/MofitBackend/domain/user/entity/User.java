@@ -1,11 +1,14 @@
 package com.Mofit.MofitBackend.domain.user.entity;
 
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
+import com.Mofit.MofitBackend.domain.exercisePlan.entity.ExercisePlan;
 import com.Mofit.MofitBackend.domain.health.entity.Health;
 import com.Mofit.MofitBackend.domain.stamina.entity.Stamina;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -44,6 +47,6 @@ public class User extends BaseEntity {
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private AnalyzeResult analyzeResult;
 //
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ExercisePlan> exercisePlans;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExercisePlan> exercisePlans;
 }
