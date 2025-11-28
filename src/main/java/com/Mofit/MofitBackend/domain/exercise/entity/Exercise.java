@@ -42,7 +42,7 @@ public class Exercise extends BaseEntity {
     private int reps;
     private int sets;
     private int restSec;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "exercise_restricts", joinColumns = @JoinColumn(name = "exercise_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "exercise_restrict")

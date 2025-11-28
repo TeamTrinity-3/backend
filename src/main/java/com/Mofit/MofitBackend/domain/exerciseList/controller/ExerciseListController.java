@@ -21,10 +21,10 @@ public class ExerciseListController {
     private final ExerciseListService exerciseListService;
 
     //특정 일차 운동 목록 불러오기
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{planId}")
     @Operation(summary = "운동 목록 불러오기")
-    public ApiResponse<RoutineResponse> getExerciseList(@PathVariable("id") Long id, Authentication authentication){
-        RoutineResponse routineResponse = exerciseListService.getExerciseList(authentication.getName(), id);
+    public ApiResponse<RoutineResponse> getExerciseList(@PathVariable("planId") Long planId, Authentication authentication){
+        RoutineResponse routineResponse = exerciseListService.getExerciseList(authentication.getName(), planId);
         return new ApiResponse<>(200, routineResponse);
     }
 }

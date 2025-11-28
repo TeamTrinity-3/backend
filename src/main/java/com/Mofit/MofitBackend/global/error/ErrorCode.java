@@ -33,6 +33,10 @@ public enum ErrorCode {
     //PLAN
     PLAN_DOESNT_EXIST(404, "운동일정이 존재하지 않습니다."),
 
+    PLAN_ALREADY_COMPLETED(409,"이미 완료된 운동일정입니다."),
+
+    //EXERCISE
+    EXERCISE_DOESNT_EXIST(404, "운동이 존재하지 않습니다."),
 
     //TOKEN
     TOKEN_NOT_PROVIDED(401, "토큰이 없거나 형식이 잘못되었습니다."),
