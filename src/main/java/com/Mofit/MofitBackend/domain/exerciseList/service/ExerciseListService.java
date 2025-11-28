@@ -34,7 +34,7 @@ public class ExerciseListService {
         List<ExerciseList> exerciseLists = exerciseListRepository.findAllByExercisePlanIdOrderBySequenceAsc(planId);
 
         List<ListResponse> listResponses = exerciseLists.stream()
-                .map( list -> ListResponse.from(list))
+                .map(ListResponse::from)
                 .toList();
 
         return RoutineResponse.from(exercisePlan, listResponses);
