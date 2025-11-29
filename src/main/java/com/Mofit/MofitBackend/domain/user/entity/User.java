@@ -1,5 +1,6 @@
 package com.Mofit.MofitBackend.domain.user.entity;
 
+import com.Mofit.MofitBackend.domain.analyzeResult.entity.AnalyzeResult;
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
 import com.Mofit.MofitBackend.domain.exercisePlan.entity.ExercisePlan;
 import com.Mofit.MofitBackend.domain.health.entity.Health;
@@ -44,9 +45,9 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Stamina stamina;
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private AnalyzeResult analyzeResult;
-//
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AnalyzeResult analyzeResult;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExercisePlan> exercisePlans;
 }
