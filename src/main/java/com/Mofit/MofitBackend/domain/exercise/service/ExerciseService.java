@@ -51,13 +51,24 @@ public class ExerciseService {
     }
 
     //운동 카테고리 검색하기
-    public Page<ExerciseListItemResponse> getExerciseListItem(TargetArea targetArea, Pageable pageable){
+    public Page<ExerciseListItemResponse> getExerciseCategoryItem(TargetArea targetArea, Pageable pageable){
         if(targetArea == null){
             return exerciseRepository.findAll(pageable)
                     .map(ExerciseListItemResponse::from);
         }
 
         return exerciseRepository.findByTargetArea(targetArea, pageable)
+                .map(ExerciseListItemResponse::from);
+    }
+
+    //운동 검색창으로 검색하기
+    public Page<ExerciseListItemResponse> getExerciseKeywordItem(String keyword, Pageable pageable){
+        if(keyword == null){
+            return exerciseRepository.findAll(pageable)
+                    .map(ExerciseListItemResponse::from);
+        }
+
+        return exerciseRepository.searchByKeyword(keyword, pageable)
                 .map(ExerciseListItemResponse::from);
     }
 }
