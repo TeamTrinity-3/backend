@@ -42,13 +42,27 @@ public class ExerciseController {
     //카테고리 검색 결과 보내주기
     @GetMapping("/exercise")
     @Operation(summary = "카테고리 검색 결과 불러오기")
-    public ApiResponse<Page<ExerciseListItemResponse>> getExerciseListItem(
+    public ApiResponse<Page<ExerciseListItemResponse>> getExerciseCategoryItem(
             @RequestParam(name = "targetArea", required = false) TargetArea targetArea,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "12") int size){
         size = Math.min(size, 30);
         Pageable pageable = PageRequest.of(page, size);
-        Page<ExerciseListItemResponse> listItemResponsePage = exerciseService.getExerciseListItem(targetArea, pageable);
+        Page<ExerciseListItemResponse> listItemResponsePage = exerciseService.getExerciseCategoryItem(targetArea, pageable);
         return new ApiResponse<>(200, listItemResponsePage);
     }
+
+    //검색창 사용 결과 보내주기
+    @GetMapping("/exercise/search")
+    @Operation(summary = "검색창 결과 불러오기")
+    public ApiResponse<Page<ExerciseListItemResponse>> getExerciseSearchItem(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "12") int size){
+        size = Math.min(size, 30);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ExerciseListItemResponse> listItemResponsePage = exerciseService.getExerciseKeywordItem(keyword, pageable);
+        return new ApiResponse<>(200, listItemResponsePage);
+    }
+
 }
