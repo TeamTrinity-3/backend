@@ -1,17 +1,14 @@
 package com.Mofit.MofitBackend.domain.exerciseList.controller;
 
-import com.Mofit.MofitBackend.domain.exerciseList.dto.ListResponse;
 import com.Mofit.MofitBackend.domain.exerciseList.dto.RoutineResponse;
 import com.Mofit.MofitBackend.domain.exerciseList.service.ExerciseListService;
 import com.Mofit.MofitBackend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/list")

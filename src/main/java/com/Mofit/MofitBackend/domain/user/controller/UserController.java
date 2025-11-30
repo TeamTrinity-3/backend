@@ -36,4 +36,13 @@ public class UserController {
         ProfileResponse profileResponse = userService.getUserProfile(authentication.getName());
         return new ApiResponse<>(200, profileResponse);
     }
+
+    //회원 탈퇴하기
+    @Transactional
+    @DeleteMapping("/delete")
+    @Operation(summary = "회원 탈퇴하기")
+    public ApiResponse<String> deleteUser(Authentication authentication){
+        userService.deleteUser(authentication.getName());
+        return new ApiResponse<>(204, null);
+    }
 }

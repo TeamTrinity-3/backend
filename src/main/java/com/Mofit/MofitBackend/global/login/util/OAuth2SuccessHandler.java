@@ -1,21 +1,16 @@
 package com.Mofit.MofitBackend.global.login.util;
 
 import com.Mofit.MofitBackend.global.login.details.CustomOauth2UserDetails;
-import com.Mofit.MofitBackend.global.login.dto.TokenResponse;
-import com.Mofit.MofitBackend.global.response.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 
 @RequiredArgsConstructor
 @Component

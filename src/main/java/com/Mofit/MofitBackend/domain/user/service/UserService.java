@@ -29,4 +29,11 @@ public class UserService {
         User user = loginService.getLoginUser(loginId);
         return ProfileResponse.from(user);
     }
+
+    //회원 탈퇴하기
+    @Transactional
+    public void deleteUser(String loginId){
+        User user = loginService.getLoginUser(loginId);
+        userRepository.delete(user);
+    }
 }

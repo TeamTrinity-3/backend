@@ -2,7 +2,6 @@ package com.Mofit.MofitBackend.domain.health.controller;
 
 import com.Mofit.MofitBackend.domain.health.dto.HealthRequest;
 import com.Mofit.MofitBackend.domain.health.dto.HealthResponse;
-import com.Mofit.MofitBackend.domain.health.entity.Health;
 import com.Mofit.MofitBackend.domain.health.service.HealthService;
 import com.Mofit.MofitBackend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
