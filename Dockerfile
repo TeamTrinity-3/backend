@@ -1,8 +1,3 @@
-FROM gradle:8.10-jdk17 AS builder
-COPY . .
-RUN gradle clean build -x test
-
-
 FROM eclipse-temurin:17-jdk-jammy
 ENV TZ=Asia/Seoul
 RUN apt-get update && \
@@ -12,7 +7,9 @@ RUN apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata && \
     apt-get clean
 
-#ARG JAR_FILE=build/libs/server-0.0.1-SNAPSHOT.jar
-COPY --from=builder /home/gradle/build/libs/*.jar app.jar
+WORKDIR /app
+
+COPY build/libs/*.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar","app.jar"]
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar","/app/app.jar"]
