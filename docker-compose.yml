@@ -8,7 +8,6 @@ services:
       - "8080"
     networks:
       - fiti
-    restart: always
 
   nginx:
     image: nginx:latest
