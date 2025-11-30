@@ -2,12 +2,10 @@ package com.Mofit.MofitBackend.global.login.filter;
 
 import com.Mofit.MofitBackend.global.error.ErrorCode;
 import com.Mofit.MofitBackend.global.error.ErrorResponse;
-import com.Mofit.MofitBackend.global.error.exception.BusinessException;
 import com.Mofit.MofitBackend.global.login.details.CustomSecurityUserDetails;
 import com.Mofit.MofitBackend.global.login.dto.TokenResponse;
 import com.Mofit.MofitBackend.global.login.util.JwtUtil;
 import com.Mofit.MofitBackend.global.response.ApiResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

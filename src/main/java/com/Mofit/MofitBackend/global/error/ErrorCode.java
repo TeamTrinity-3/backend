@@ -38,6 +38,9 @@ public enum ErrorCode {
     //EXERCISE
     EXERCISE_DOESNT_EXIST(404, "운동이 존재하지 않습니다."),
 
+    //ANALYZE_RESULT
+    RESULT_DOESNT_EXIST(404, "분석 결과가 존재하지 않습니다."),
+
     //TOKEN
     TOKEN_NOT_PROVIDED(401, "토큰이 없거나 형식이 잘못되었습니다."),
 

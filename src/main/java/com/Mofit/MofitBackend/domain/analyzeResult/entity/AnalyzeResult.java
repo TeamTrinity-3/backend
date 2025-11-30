@@ -3,7 +3,6 @@ package com.Mofit.MofitBackend.domain.analyzeResult.entity;
 import com.Mofit.MofitBackend.domain.common.BaseEntity;
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -37,5 +36,6 @@ public class AnalyzeResult extends BaseEntity {
     private Persona persona;
 
     //llm 결과
+    @Column(columnDefinition = "TEXT")
     private String llmReport;
 }

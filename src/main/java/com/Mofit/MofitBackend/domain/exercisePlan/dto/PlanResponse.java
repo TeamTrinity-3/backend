@@ -4,9 +4,6 @@ import com.Mofit.MofitBackend.domain.exercisePlan.entity.ExercisePlan;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Builder
 public class PlanResponse {

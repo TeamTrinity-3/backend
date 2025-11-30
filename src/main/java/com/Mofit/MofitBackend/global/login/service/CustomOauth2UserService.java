@@ -3,18 +3,10 @@ package com.Mofit.MofitBackend.global.login.service;
 import com.Mofit.MofitBackend.domain.user.entity.User;
 import com.Mofit.MofitBackend.domain.user.entity.UserRole;
 import com.Mofit.MofitBackend.domain.user.repository.UserRepository;
-import com.Mofit.MofitBackend.global.error.ErrorCode;
-import com.Mofit.MofitBackend.global.error.exception.BusinessException;
 import com.Mofit.MofitBackend.global.login.details.CustomOauth2UserDetails;
 import com.Mofit.MofitBackend.global.login.details.GoogleUserDetails;
 import com.Mofit.MofitBackend.global.login.details.OAuth2UserInfo;
-import com.Mofit.MofitBackend.global.login.dto.TokenResponse;
-import com.Mofit.MofitBackend.global.login.filter.LoginFilter;
 import com.Mofit.MofitBackend.global.login.util.JwtUtil;
-import com.Mofit.MofitBackend.global.response.ApiResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -24,8 +16,6 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
-import java.io.IOException;
 import java.util.Optional;
 
 @Service

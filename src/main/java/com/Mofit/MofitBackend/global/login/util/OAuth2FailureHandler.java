@@ -1,16 +1,9 @@
 package com.Mofit.MofitBackend.global.login.util;
 
-import com.Mofit.MofitBackend.global.error.ErrorCode;
-import com.Mofit.MofitBackend.global.error.ErrorResponse;
-import com.Mofit.MofitBackend.global.error.exception.BusinessException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

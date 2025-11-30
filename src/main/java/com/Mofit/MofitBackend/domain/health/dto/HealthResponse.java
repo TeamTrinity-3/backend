@@ -1,6 +1,5 @@
 package com.Mofit.MofitBackend.domain.health.dto;
 
-import com.Mofit.MofitBackend.domain.health.entity.Gender;
 import com.Mofit.MofitBackend.domain.health.entity.Health;
 import com.Mofit.MofitBackend.domain.health.entity.RestrictArea;
 import lombok.Builder;

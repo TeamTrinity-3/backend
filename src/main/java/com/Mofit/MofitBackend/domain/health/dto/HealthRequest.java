@@ -1,7 +1,6 @@
 package com.Mofit.MofitBackend.domain.health.dto;
 
 import com.Mofit.MofitBackend.domain.health.entity.*;
-import com.Mofit.MofitBackend.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
