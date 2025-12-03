@@ -24,17 +24,7 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 
         String error = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
 
-        //host 파악
-        String host = request.getHeader("Host");
-
-        String redirectUrl;
-//        if(host!=null && host.contains("localhost")){
-//            redirectUrl = "http://"+host+"/login/failure?error=" + error;
-//        }
-//        else{
-//            redirectUrl = "https://mefoweb.com/login/failure?error=" + error;
-//        }
-        redirectUrl = "http://localhost:5173/login/failure?error="+error;
+        String redirectUrl = "https://mefoweb.com/login/failure?error="+error;
         response.sendRedirect(redirectUrl);
 
     }
