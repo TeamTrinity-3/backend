@@ -16,7 +16,7 @@ public class PlanResponse {
         return PlanResponse.builder()
                 .planId(exercisePlan.getId())
                 .day(exercisePlan.getDay())
-                .active(exercisePlan.getDay()<=currentDay)
+                .active(exercisePlan.getDay()<=currentDay||(currentDay==-1))
                 .progress(exercisePlan.isProgress())
                 .build();
 

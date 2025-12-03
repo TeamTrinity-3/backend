@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.temporal.ChronoUnit;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,13 +22,14 @@ public class ExercisePlanService {
     //일정 진행 상황 보내주기
     public PlanListResponse getExercisePlan(String loginId){
         User user = loginService.getLoginUser(loginId);
-        List<ExercisePlan> exercisePlans = exercisePlanRepository.findAllByUserIdOrderByDayAsc(user.getId());
+        List<ExercisePlan> exercisePlans = exercisePlanRepository
+                .findAllByUserIdOrderByDayAsc(user.getId());
 
         //활성화 여부 계산
-        long currentDay = getCurrentDay(exercisePlans.get(0));
+        int currentDay = getCurrentDay(exercisePlans);
 
         List<PlanResponse> planResponses = exercisePlans.stream()
-                .map(plan -> PlanResponse.from(plan, (int)currentDay))
+                .map(plan -> PlanResponse.from(plan, currentDay))
                 .toList();
 
         return PlanListResponse.from((int)currentDay, planResponses);
@@ -40,16 +39,18 @@ public class ExercisePlanService {
     @Transactional
     public PlanResponse patchExercisePlanProgress(String loginId, Long planId){
         User user = loginService.getLoginUser(loginId);
-        ExercisePlan exercisePlan = exercisePlanRepository.findById(planId)
-                .orElseThrow(()-> new BusinessException(ErrorCode.PLAN_DOESNT_EXIST));
 
-        //해당 회원의 plan이 아닌 경우
-        if(!exercisePlan.getUser().getId().equals(user.getId())){
-            throw new BusinessException(ErrorCode.NOT_VALID_ACCESS);
-        }
+        //요청한 회원의 plan인지 검증 및, currentDay 계산용
+        List<ExercisePlan> exercisePlans = exercisePlanRepository
+                .findAllByUserIdOrderByDayAsc(user.getId());
+
+        ExercisePlan exercisePlan = exercisePlans.stream()
+                        .filter(p -> p.getId().equals(planId))
+                        .findFirst()
+                        .orElseThrow(() -> new BusinessException(ErrorCode.PLAN_DOESNT_EXIST));
 
         //활성화 여부 계산
-        long currentDay = getCurrentDay(exercisePlan);
+        int currentDay = getCurrentDay(exercisePlans);
 
         //오늘의 plan이 아닌 경우
         if(currentDay!=exercisePlan.getDay()){
@@ -64,13 +65,16 @@ public class ExercisePlanService {
         exercisePlan.setProgress(true);
         exercisePlanRepository.save(exercisePlan);
 
-        return PlanResponse.from(exercisePlan, (int)currentDay);
+        return PlanResponse.from(exercisePlan, currentDay+1);
     }
 
     //current day 계산 함수
-    private long getCurrentDay(ExercisePlan exercisePlan){
-        LocalDate startDate = exercisePlan.getCreatedAt().toLocalDate();
-        LocalDate today = LocalDate.now();
-        return ChronoUnit.DAYS.between(startDate, today)+1;
+    private int getCurrentDay(List<ExercisePlan> exercisePlans){
+        for(ExercisePlan plan : exercisePlans){
+            if(!plan.isProgress()){
+                return plan.getDay();
+            }
+        }
+        return -1;
     }
 }
