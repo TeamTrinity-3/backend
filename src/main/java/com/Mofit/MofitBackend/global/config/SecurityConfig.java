@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
-                        .requestMatchers("/","/login/","/login/**","/oauth2/**").permitAll()
+                        .requestMatchers("/","/login", "/login/","/login/**","/oauth2/**").permitAll()
                         .anyRequest().authenticated());
         http
                 .oauth2Login(oauth2 -> oauth2
